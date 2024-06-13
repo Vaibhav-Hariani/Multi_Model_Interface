@@ -1,14 +1,15 @@
-version: '1.0'
+version: '1.0.1'
 services:
 
   #Launches ollama, with custom build file
   ollama:
-    image: ollama/ollama:rocm
+    image: ollama/ollama:latest
     ports:
       - 11434:11434
     volumes:
       - .:/code
       - ./ollama_data:/root/.ollama
+      - ./ollama_docker/:/root/relevant_files
     container_name: ollama
     pull_policy: always
     tty: true
@@ -16,8 +17,5 @@ services:
     environment:
       - OLLAMA_KEEP_ALIVE=24h
       - OLLAMA_HOST=0.0.0.0
-    build:
-      context: .
-      dockerfile: ./ollama_docker/ollama.dockerfile    
     # networks:
     #   - ollama-docker
