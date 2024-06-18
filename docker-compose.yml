@@ -1,6 +1,5 @@
-version: '1.0.1'
+version: '1.0'
 services:
-
   #Launches ollama, with custom build file
   ollama:
     image: ollama/ollama:latest
@@ -17,5 +16,22 @@ services:
     environment:
       - OLLAMA_KEEP_ALIVE=24h
       - OLLAMA_HOST=0.0.0.0
+
+  #Creates database
+  Postgre:
+    image: postgres
+    volumes:
+      - ./Database/db:/var/lib/postgresql/data
+      - ./Database/init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432
+    container_name: Postgres
+    pull_policy: always
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER = ollama
+      - POSTGRES_DB = postgres_db
+
     # networks:
     #   - ollama-docker
